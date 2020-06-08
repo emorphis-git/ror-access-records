@@ -152,10 +152,7 @@ class AccessRecordsController < ApplicationController
 
   def check_path
     @path = request.fullpath
-    if(@path.include? ('project'))
-      return true
-    end
-     return false
+    return @path.include? ('project') ? true : false 
   end
   
   private
@@ -168,12 +165,7 @@ class AccessRecordsController < ApplicationController
   end
 
   def get_project(access_record)
-    
-    if access_record.blank?
-      Project.all
-    else
-      Project.where("client_id = ?", access_record.client_id)
-    end
+    access_record.blank? ? Project.all :  Project.where("client_id = ?", access_record.client_id)
   end
 
 end
