@@ -1,0 +1,79 @@
+<%
+  @list_access_record = User.current.allowed_to?(:list_access_record, @project)
+  @view_access_record = User.current.allowed_to?(:view_access_record, @project)
+  @add_access_record = User.current.allowed_to?(:add_access_record, @project)
+  @edit_access_record = User.current.allowed_to?(:edit_access_record, @project)
+  @delete_access_record = User.current.allowed_to?(:delete_access_record, @project)
+ %>
+  
+  <% html_title l(:label_administration), "Access Records" %>
+
+  <%= toolbar title: "Access Records" do %>
+    <% if (!@path.include? ('project')) %>
+      <li class="toolbar-item">
+        <%= link_to new_access_record_path(@project),
+              { class: 'button -alt-highlight',
+                aria: {label: "Access Record"},
+                title: "Access Records"} do %>
+          <%= op_icon('button--icon icon-add') %>
+          <span class="button--text"><%= "Access Record" %></span>
+        <% end %>
+      </li>
+    <% elsif @add_access_record %>
+      <li class="toolbar-item">
+        <%= link_to new_project_access_record_path(@project),
+              { class: 'button -alt-highlight',
+                aria: {label: "Access Record"},
+                title: "Access Records"} do %>
+          <%= op_icon('button--icon icon-add') %>
+          <span class="button--text"><%= "Access Record" %></span>
+        <% end %>
+      </li>
+    <% end %>
+  <% end %>
+  <% if @access_records.any? %>
+    <div class="generic-table--container">
+      <div class="generic-table--results-container">
+        <table class="generic-table">
+          <colgroup>
+            <col highlight-col>
+            <col highlight-col>
+            <col highlight-col>
+            <col highlight-col>
+            <col highlight-col>
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+                <th>Client Name</th>
+                <th>Project Name</th>
+                <th>Access Type</th>
+                <th>Host Address</th>
+                <% if (@edit_access_record || @view_access_record ||  @delete_access_record) || (!@path.include? ('project'))  %>
+                <th>Actions</th>
+                <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% @access_records.each do |access_record|  %>
+              <% @acc_record = access_record %>
+              <tr class="user">
+                <td class="company_name"><%= @acc_record.client.company_name %></td>
+                <td class="project_name"><%= @acc_record.project.name %></td>
+                <td class="access_type"><%= @acc_record.access_type %></td>
+                <td class="host_address"><%= @acc_record.host_address %></td>
+                <% if (@edit_access_record || @view_access_record ||  @delete_access_record) || (!@path.include? ('project')) %>
+                  <td class="">
+                    <%= render 'link' %>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <%= pagination_links_full @access_records %>
+  <% else %>
+    <%= no_results_box(action_url: new_access_record_path, display_action: true)%>
+  <% end %>
