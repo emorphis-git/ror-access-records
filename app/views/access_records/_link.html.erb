@@ -1,0 +1,37 @@
+<% if (!@path.include? ('project')) %>
+  <%= link_to('', edit_access_record_path(@acc_record),class: 'icon icon-edit',
+      title: "Edit" )%>&nbsp; &nbsp;
+  <%= link_to('', access_record_path(@acc_record), method: :get,
+      class: 'icon-action-menu icon-watched',
+      title: "Show",
+      :data => { :toggle => 'modal', :target => '#myModal'  }
+      ) 
+       %>&nbsp;
+
+  <%= link_to('', access_record_path(@acc_record), method: :delete, 
+      data: {confirm: "Are you sure want to delete?"},
+      class: 'icon icon-delete',
+      title: "Delete")
+       %>
+  
+<% else %>
+  <% if @edit_access_record %>
+    <%= link_to('', edit_project_access_record_path(@project, @acc_record),class: 'icon icon-edit',
+      title: "Edit" )%>&nbsp; &nbsp;
+  <% end %>
+  <% if @view_access_record %>
+    <%= link_to('', project_access_record_path(@project,@acc_record), method: :get,
+      class: 'icon-action-menu icon-watched',
+      title: "Show",
+      :data => { :toggle => 'modal', :target => '#myModal'  }
+      ) 
+       %>&nbsp;
+  <% end %>
+  <% if @delete_access_record %>
+    <%= link_to('', project_access_record_path(@project,@acc_record), method: :delete, 
+      data: {confirm: "Are you sure want to delete?"},
+      class: 'icon icon-delete',
+      title: "Delete")
+       %>
+  <% end %>
+<% end %>

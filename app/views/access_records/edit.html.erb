@@ -1,0 +1,10 @@
+<% html_title l(:label_administration), "Edit Access Record" %>
+<% local_assigns[:additional_breadcrumb] = t(:label_access_record_edit) %>
+<%= breadcrumb_toolbar t(:label_access_record_edit) %>
+<%= javascript_include_tag 'access_record.js'%>
+
+<% if (!@path.include? ('project')) %>
+  <%= render 'admin_form' %>
+<% else %>
+  <%= render 'form' %>
+<% end %>
